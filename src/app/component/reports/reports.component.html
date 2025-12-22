@@ -1,24 +1,63 @@
+<!-- 🔐 ADMIN FORM -->
+<div *ngIf="isAdmin" class="container mb-4 p-3 border rounded bg-light">
+  <h6 class="fw-bold text-danger">Add / Update Report</h6>
 
-<div class="p-5 bg-light">
-  <div class="container">
-    <h2>{{ 'reports.title' | translate }}</h2>
-
-    <table class="table table-bordered mt-4">
-      <thead class="table-light">
-        <tr>
-          <th>{{ 'reports.table.header.title' | translate }}</th>
-          <th>{{ 'reports.table.header.description' | translate }}</th>
-          <th>{{ 'reports.table.header.download' | translate }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of ('reports.table.rows' | translate)">
-          <td>{{ row.title }}</td>
-          <td>{{ row.description }}</td>
-          <td><a href="#" class="text-primary fw-bold">{{ row.link }}</a></td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="row g-2">
+    <div class="col-md-4">
+      <input class="form-control"
+             placeholder="Title"
+             [(ngModel)]="form.title">
+    </div>
+    <div class="col-md-4">
+      <input class="form-control"
+             placeholder="Description"
+             [(ngModel)]="form.description">
+    </div>
+    <div class="col-md-4">
+      <input class="form-control"
+             placeholder="Download Link"
+             [(ngModel)]="form.link">
+    </div>
   </div>
+
+  <button class="btn btn-danger mt-2" (click)="save()">
+    {{ form.id ? 'Update' : 'Add' }}
+  </button>
 </div>
+
+  <thead class="table-light">
+  <tr>
+    <th>{{ 'reports.table.header.title' | translate }}</th>
+    <th>{{ 'reports.table.header.description' | translate }}</th>
+    <th>{{ 'reports.table.header.download' | translate }}</th>
+    <th *ngIf="isAdmin">Action</th>
+  </tr>
+</thead>
+
+<tbody>
+  <tr *ngFor="let row of rows">
+    <td>{{ row.title }}</td>
+    <td>{{ row.description }}</td>
+    <td>
+      <a [href]="row.link" target="_blank"
+         class="text-primary fw-bold">
+        Download
+      </a>
+    </td>
+
+    <!-- 🔐 ADMIN ACTIONS -->
+    <td *ngIf="isAdmin">
+      <button class="btn btn-sm btn-warning me-1"
+              (click)="edit(row)">
+        Edit
+      </button>
+
+      <button class="btn btn-sm btn-danger"
+              (click)="delete(row.id)">
+        Delete
+      </button>
+    </td>
+  </tr>
+</tbody>
+
 

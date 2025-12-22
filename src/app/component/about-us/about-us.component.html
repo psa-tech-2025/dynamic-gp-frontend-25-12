@@ -1,32 +1,68 @@
-<div class="container mt-5 mb-5">
+
+<!-- 🔐 ADMIN EDIT PANEL -->
+<div *ngIf="isAdmin" class="container mb-4 p-3 border rounded bg-light">
+  <h6 class="fw-bold text-danger">Edit About Section</h6>
+
+  <textarea class="form-control mb-2"
+            rows="3"
+            placeholder="Intro"
+            [(ngModel)]="about.intro"></textarea>
+
+  <textarea class="form-control mb-2"
+            rows="3"
+            placeholder="History"
+            [(ngModel)]="about.historyDesc"></textarea>
+
+  <textarea class="form-control mb-2"
+            rows="3"
+            placeholder="Services Intro"
+            [(ngModel)]="about.servicesIntro"></textarea>
+
+  <input class="form-control mb-2"
+         placeholder="Contact Address"
+         [(ngModel)]="about.contactAddress">
+
+  <input class="form-control mb-2"
+         placeholder="Phone"
+         [(ngModel)]="about.contactPhone">
+
+  <input class="form-control mb-3"
+         placeholder="Email"
+         [(ngModel)]="about.contactEmail">
+
+  <button class="btn btn-danger" (click)="save()">Update</button>
+</div>
+
+  <div class="container mt-5 mb-5">
   <h5 class="text-center text-danger fw-bold border-bottom pb-2" style="width: fit-content; margin: auto;">
     {{ 'about.title' | translate }}
   </h5>
 
   <div class="mt-4">
-    <p>{{ 'about.intro' | translate }}</p>
+    <p>{{ about.intro }}</p>
 
     <h6 class="text-danger fw-bold mt-4">{{ 'about.historyTitle' | translate }}</h6>
-    <p>{{ 'about.historyDesc' | translate }}</p>
+    <p>{{ about.historyDesc }}</p>
 
     <h6 class="text-danger fw-bold mt-4">{{ 'about.objectivesTitle' | translate }}</h6>
     <ul>
-      <li *ngFor="let item of ('about.objectivesList' | translate)">{{ item }}</li>
+      <li *ngFor="let item of about.objectivesList">{{ item }}</li>
     </ul>
 
     <h6 class="text-danger fw-bold mt-4">{{ 'about.servicesTitle' | translate }}</h6>
-    <p>{{ 'about.servicesIntro' | translate }}</p>
+    <p>{{ about.servicesIntro }}</p>
     <ul>
-      <li *ngFor="let service of ('about.servicesList' | translate)">{{ service }}</li>
+      <li *ngFor="let service of about.servicesList">{{ service }}</li>
     </ul>
 
     <h6 class="text-danger fw-bold mt-4">{{ 'about.contactTitle' | translate }}</h6>
     <div class="bg-light p-3 rounded shadow-sm mt-2 text-center">
-      <p class="mb-1">{{ 'about.contactAddress' | translate }}</p>
-      <p class="mb-1">{{ 'about.contactPhone' | translate }}</p>
-      <p>{{ 'about.contactEmail' | translate }}</p>
+      <p class="mb-1">{{ about.contactAddress }}</p>
+      <p class="mb-1">{{ about.contactPhone }}</p>
+      <p>{{ about.contactEmail }}</p>
     </div>
   </div>
 </div>
+
 
 

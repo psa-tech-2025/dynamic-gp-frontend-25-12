@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
+import { GpContentService } from 'src/app/services/gp-content.service';
 
 @Component({
   selector: 'app-about-citizon',
@@ -7,9 +9,34 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AboutCitizonComponent implements OnInit {
 
-  constructor() { }
+  isAdmin = false;
+
+  data: any = {
+    servicesIntro: '',
+    applicationsIntro: '',
+    complaintDescription: ''
+  };
+
+  constructor(
+    private auth: AuthService,
+    private gp: GpContentService
+  ) {}
 
   ngOnInit(): void {
+
+    // 📖 Public read
+    this.gp.getCitizenInfo().subscribe(res => {
+      if (res) this.data = res;
+    });
+
+        // 🔐 Logged-in check only
+    this.auth.getAuthState().subscribe(user => {
+      this.isAdmin = !!user;
+    });
   }
 
+  save() {
+    if (!this.isAdmin) return;
+    this.gp.updateCitizenInfo(this.data);
+  }
 }

@@ -140,5 +140,47 @@ updateScheme(id: string, data: any) {
 deleteScheme(id: string) {
   return this.firestore.collection('schemes').doc(id).delete();
 }
+// gp-content.service.ts
+
+getAbout() {
+  return this.firestore.doc('about/main').valueChanges();
+}
+
+updateAbout(data: any) {
+  return this.firestore.doc('about/main').set(data, { merge: true });
+}
+// gp-content.service.ts
+
+getReports() {
+  return this.firestore
+    .collection('reports', ref => ref.orderBy('title'))
+    .valueChanges({ idField: 'id' });
+}
+
+addReport(data: any) {
+  return this.firestore.collection('reports').add(data);
+}
+
+updateReport(id: string, data: any) {
+  return this.firestore.doc(`reports/${id}`).update(data);
+}
+
+deleteReport(id: string) {
+  return this.firestore.doc(`reports/${id}`).delete();
+}
+
+// gp-content.service.ts
+
+getCitizenInfo() {
+  return this.firestore.doc('citizenInfo/main').valueChanges();
+}
+
+updateCitizenInfo(data: any) {
+  return this.firestore.doc('citizenInfo/main')
+    .set(data, { merge: true });
+}
+
+
+
 
 }

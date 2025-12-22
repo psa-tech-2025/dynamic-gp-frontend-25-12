@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class SignInComponent  {
 
-  isRegister = true;
+  isRegister = false;
   error = '';
 
   authForm = this.fb.group({

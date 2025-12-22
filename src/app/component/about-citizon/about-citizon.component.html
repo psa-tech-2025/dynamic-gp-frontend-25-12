@@ -1,5 +1,27 @@
 
 
+<!-- 🔐 ADMIN EDIT PANEL -->
+<div *ngIf="isAdmin" class="container mb-4 p-3 border rounded bg-light">
+  <h6 class="fw-bold text-danger">Edit Citizen Information</h6>
+
+  <textarea class="form-control mb-2"
+            rows="3"
+            placeholder="Services Intro"
+            [(ngModel)]="data.servicesIntro"></textarea>
+
+  <textarea class="form-control mb-2"
+            rows="3"
+            placeholder="Applications Intro"
+            [(ngModel)]="data.applicationsIntro"></textarea>
+
+  <textarea class="form-control mb-3"
+            rows="3"
+            placeholder="Complaint Description"
+            [(ngModel)]="data.complaintDescription"></textarea>
+
+  <button class="btn btn-danger" (click)="save()">Update</button>
+</div>
+
 <div class="container my-5">
     <div class="accordion" id="infoAccordion">
   
