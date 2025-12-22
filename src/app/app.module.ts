@@ -17,6 +17,15 @@ import { ReportsComponent } from './component/reports/reports.component';
 import { LoginComponent } from './component/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AboutUsComponent } from './component/about-us/about-us.component';
+import { RegisterComponent } from './auth/register/register.component';
+import { SignInComponent } from './auth/sign-in/sign-in.component';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+
+import { environment } from '../environments/environment';
+import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
+import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -33,7 +42,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     OFFICERSComponent,
     ReportsComponent,
     LoginComponent,
-    AboutUsComponent
+    AboutUsComponent,
+    RegisterComponent,
+    SignInComponent,
+    VerifyEmailComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -41,6 +54,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserModule,
     AppRoutingModule,
         HttpClientModule,
+          AngularFireModule.initializeApp(environment.firebase),
+              AngularFireAuthModule,
+                AngularFireStorageModule,
+    
+        
         TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

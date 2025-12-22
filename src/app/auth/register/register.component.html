@@ -1,0 +1,16 @@
+<div class="container mt-5" style="max-width:500px">
+  <h4 class="text-center mb-3">GP Registration</h4>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <input class="form-control mb-2" placeholder="Name" formControlName="name">
+    <input class="form-control mb-2" placeholder="Email" formControlName="email">
+    <input class="form-control mb-2" placeholder="Mobile" formControlName="mobile">
+    <input type="password" class="form-control mb-3" placeholder="Password" formControlName="password">
+
+    <button class="btn btn-danger w-100" [disabled]="form.invalid || loading">
+      Register
+    </button>
+  </form>
+
+  <div class="text-danger mt-2 text-center">{{ error }}</div>
+</div>

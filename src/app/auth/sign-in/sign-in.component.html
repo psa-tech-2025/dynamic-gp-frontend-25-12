@@ -1,0 +1,75 @@
+<div class="container d-flex flex-column align-items-center justify-content-center" style="height: 100vh;">
+
+  <!-- Title -->
+  <h3 class="text-danger fw-bold border-bottom pb-1">
+    {{ isRegister ? 'Register' : 'Login' }}
+  </h3>
+
+  <!-- Card -->
+  <div class="bg-light p-4 rounded shadow-sm mt-4" style="min-width: 600px;">
+
+    <h5 class="text-center mb-4 fw-bold">
+      {{ isRegister ? 'Create GP Account' : 'Login to GP Portal' }}
+    </h5>
+
+    <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+
+      <!-- Name (Register only) -->
+      <div class="mb-3" *ngIf="isRegister">
+        <input type="text" class="form-control"
+          placeholder="Full Name"
+          formControlName="name">
+      </div>
+
+      <!-- Mobile (Register only) -->
+      <div class="mb-3" *ngIf="isRegister">
+        <input type="text" class="form-control"
+          placeholder="Mobile Number"
+          formControlName="mobile">
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <input type="email" class="form-control"
+          placeholder="Email Address"
+          formControlName="email">
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <input type="password" class="form-control"
+          placeholder="Password"
+          formControlName="password">
+      </div>
+
+      <!-- Submit -->
+      <button class="btn w-100 text-white"
+        style="background-color: #a42727;"
+        [disabled]="authForm.invalid">
+        {{ isRegister ? 'Register' : 'Login' }}
+      </button>
+    </form>
+
+    <!-- Error -->
+    <div *ngIf="error" class="text-danger mt-3 text-center">
+      {{ error }}
+    </div>
+
+    <!-- Toggle -->
+     <!-- forgot-password -->
+    <div class="text-center mt-4">
+        <span>
+            forgot password? <a routerLink="/forgot-password"> click here</a>
+        </span>
+      <span>
+        {{ isRegister ? 'Already have an account?' : 'New user?' }}
+      </span>
+      <button class="btn btn-link text-danger fw-bold"
+        type="button"
+        (click)="toggleMode()">
+        {{ isRegister ? 'Login here' : 'Register here' }}
+      </button>
+    </div>
+
+  </div>
+</div>
