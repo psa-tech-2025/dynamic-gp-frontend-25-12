@@ -27,9 +27,10 @@ export class SCHEMESComponent implements OnInit {
 
   ngOnInit(): void {
     // 🔓 Public read
-    this.gp.getSchemes().subscribe(data => {
-      this.schemes = data;
-    });
+this.gp.getSchemes().subscribe((data: any[]) => {
+  this.schemes = data;
+});
+
 
     // 🔐 Role check
    this.auth.getAuthState().subscribe(user => {
@@ -37,17 +38,23 @@ export class SCHEMESComponent implements OnInit {
     });
   }
 
-  save() {
-    if (!this.isAdmin) return;
+save() {
+  if (!this.isAdmin) return;
 
-    if (this.form.id) {
-      this.gp.updateScheme(this.form.id, this.form);
-    } else {
-      this.gp.addScheme(this.form);
-    }
+  const payload = {
+    name: this.form.name,
+    desc: this.form.desc,
+    link: this.form.link
+  };
 
-    this.reset();
+  if (this.form.id) {
+    this.gp.updateScheme(this.form.id, payload);
+  } else {
+    this.gp.addScheme(payload);
   }
+
+  this.reset();
+}
 
   edit(scheme: any) {
     this.form = { ...scheme };

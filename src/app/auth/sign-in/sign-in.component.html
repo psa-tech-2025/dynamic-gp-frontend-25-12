@@ -1,4 +1,4 @@
-<div class="container d-flex flex-column align-items-center justify-content-center" style="height: 100vh;">
+<div class="container d-flex flex-column align-items-center justify-content-center vh-100">
 
   <!-- Title -->
   <h3 class="text-danger fw-bold border-bottom pb-1">
@@ -6,7 +6,7 @@
   </h3>
 
   <!-- Card -->
-  <div class="bg-light p-4 rounded shadow-sm mt-4" style="min-width: 600px;">
+  <div class="bg-light p-4 rounded shadow-sm mt-4" style="min-width: 600px; max-width: 95%;">
 
     <h5 class="text-center mb-4 fw-bold">
       {{ isRegister ? 'Create GP Account' : 'Login to GP Portal' }}
@@ -14,61 +14,64 @@
 
     <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
 
-      <!-- Name (Register only) -->
+      <!-- Name -->
       <div class="mb-3" *ngIf="isRegister">
-        <input type="text" class="form-control"
-          placeholder="Full Name"
-          formControlName="name">
+        <input class="form-control"
+               placeholder="Full Name"
+               formControlName="name">
       </div>
 
-      <!-- Mobile (Register only) -->
+      <!-- Mobile -->
       <div class="mb-3" *ngIf="isRegister">
-        <input type="text" class="form-control"
-          placeholder="Mobile Number"
-          formControlName="mobile">
+        <input class="form-control"
+               placeholder="Mobile Number"
+               formControlName="mobile">
       </div>
 
       <!-- Email -->
       <div class="mb-3">
-        <input type="email" class="form-control"
-          placeholder="Email Address"
-          formControlName="email">
+        <input class="form-control"
+               type="email"
+               placeholder="Email Address"
+               formControlName="email">
       </div>
 
       <!-- Password -->
       <div class="mb-3">
-        <input type="password" class="form-control"
-          placeholder="Password"
-          formControlName="password">
+        <input class="form-control"
+               type="password"
+               placeholder="Password"
+               formControlName="password">
       </div>
 
       <!-- Submit -->
       <button class="btn w-100 text-white"
-        style="background-color: #a42727;"
-        [disabled]="authForm.invalid">
+              style="background:#a42727"
+              [disabled]="authForm.invalid">
         {{ isRegister ? 'Register' : 'Login' }}
       </button>
+
     </form>
 
     <!-- Error -->
-    <div *ngIf="error" class="text-danger mt-3 text-center">
+    <div *ngIf="error" class="text-danger text-center mt-3">
       {{ error }}
     </div>
 
-    <!-- Toggle -->
-     <!-- forgot-password -->
+    <!-- Footer -->
     <div class="text-center mt-4">
-        <span>
-            forgot password? <a routerLink="/forgot-password"> click here</a>
-        </span>
-       <span>
-        {{ isRegister ? 'Already have an account?' : 'New user?' }}
-      </span> 
-       <button class="btn btn-link text-danger fw-bold"
-        type="button"
-        (click)="toggleMode()">
+
+      <div class="mb-2">
+        Forgot password?
+        <a routerLink="/forgot-password">Click here</a>
+      </div>
+
+      <button class="btn btn-link text-danger fw-bold"
+              type="button"
+              (click)="toggleMode()">
         {{ isRegister ? 'Login here' : 'Register here' }}
-      </button> 
+      </button>
+
     </div>
 
   </div>

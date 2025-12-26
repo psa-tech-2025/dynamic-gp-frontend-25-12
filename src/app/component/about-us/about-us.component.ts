@@ -29,9 +29,10 @@ export class AboutUsComponent implements OnInit {
 
   ngOnInit(): void {
     // 🔓 Public read
-    this.gp.getAbout().subscribe(data => {
-      if (data) this.about = data;
-    });
+this.gp.getAbout().subscribe((data: any) => {
+  this.about = data;
+});
+
 
     // 🔐 Admin check
     this.auth.getAuthState().subscribe(user => {

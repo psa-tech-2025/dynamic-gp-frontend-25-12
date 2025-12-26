@@ -5,49 +5,64 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    private loggedIn$ = new BehaviorSubject<boolean>(false);
+
+private readonly ALLOWED_LOGIN_EMAILS = [
+  'infopsatech@gmail.com',
+  'services.psatech@gmail.com'
+];
+
+
+  private loggedIn$ = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this.loggedIn$.asObservable();
 
   constructor(
     private afAuth: AngularFireAuth,
     private firestore: AngularFirestore
   ) {
-     this.checkSession();
+    this.checkSession();
   }
 
-    // ✅ expose auth state safely
   getAuthState(): Observable<any> {
     return this.afAuth.authState;
   }
-  // ✅ REGISTER + SEND EMAIL VERIFICATION
+
+  // 🔐 REGISTER
   async register(name: string, email: string, mobile: string, password: string) {
-    const cred = await this.afAuth.createUserWithEmailAndPassword(email, password);
 
-    if (!cred.user) {
-      throw new Error('User creation failed');
-    }
+  const cred = await this.afAuth.createUserWithEmailAndPassword(email, password);
 
-    // 🔔 SEND VERIFICATION EMAIL (THIS IS THE KEY LINE)
-    await cred.user.sendEmailVerification();
-
-    // 💾 SAVE USER DATA
-    await this.firestore.collection('gp-users').doc(cred.user.uid).set({
-      uid: cred.user.uid,
-      name,
-      email,
-      mobile,
-      emailVerified: false,
-      createdAt: new Date()
-    });
-
-    // 🚫 LOGOUT UNTIL EMAIL VERIFIED
-    await this.afAuth.signOut();
+  if (!cred.user) {
+    throw new Error('User creation failed');
   }
 
-  // ❌ BLOCK LOGIN IF EMAIL NOT VERIFIED
+  // 📧 Send verification email
+  await cred.user.sendEmailVerification();
+
+  // 💾 Save user profile
+  await this.firestore.collection('gp-users').doc(cred.user.uid).set({
+    uid: cred.user.uid,
+    name,
+    email,
+    mobile,
+    role: 'user',          // normal user
+    createdAt: new Date()
+  });
+
+  // 🚪 Logout until verified
+  await this.afAuth.signOut();
+}
+
+  // 🔐 LOGIN
   async login(email: string, password: string) {
+
+  // 🚫 Block unauthorized emails at login
+  if (!this.ALLOWED_LOGIN_EMAILS.includes(email.toLowerCase())) {
+    throw new Error('EMAIL_NOT_ALLOWED');
+  }
+
   const cred = await this.afAuth.signInWithEmailAndPassword(email, password);
 
+  // 🚫 Email must be verified
   if (!cred.user?.emailVerified) {
     await this.afAuth.signOut();
     throw new Error('EMAIL_NOT_VERIFIED');
@@ -68,33 +83,23 @@ export class AuthService {
     return this.afAuth.sendPasswordResetEmail(email);
   }
 
-  // ✅ Call after successful login
   async setSession() {
-    const loginTime = Date.now();
-    localStorage.setItem('loginTime', loginTime.toString());
+    localStorage.setItem('loginTime', Date.now().toString());
     this.loggedIn$.next(true);
   }
 
-  // ⏱️ Check 1-hour expiry
   checkSession() {
     const loginTime = localStorage.getItem('loginTime');
+    if (!loginTime) return;
 
-    if (!loginTime) {
-      this.loggedIn$.next(false);
-      return;
-    }
-
-    const now = Date.now();
     const oneHour = 60 * 60 * 1000;
-
-    if (now - +loginTime > oneHour) {
+    if (Date.now() - +loginTime > oneHour) {
       this.logout();
     } else {
       this.loggedIn$.next(true);
     }
   }
 
-  // 🚪 Logout
   async logout() {
     localStorage.removeItem('loginTime');
     this.loggedIn$.next(false);

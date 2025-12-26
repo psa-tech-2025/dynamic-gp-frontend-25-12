@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.css']
 })
-export class SignInComponent  {
+export class SignInComponent {
 
   isRegister = false;
   error = '';
@@ -44,35 +44,34 @@ export class SignInComponent  {
     this.authForm.get('name')?.updateValueAndValidity();
     this.authForm.get('mobile')?.updateValueAndValidity();
   }
-//     async onSubmit()
-//  {}
+
   async onSubmit() {
-  if (this.authForm.invalid) return;
+    if (this.authForm.invalid) return;
 
-  const { name, mobile, email, password } = this.authForm.value;
+    const { name, mobile, email, password } = this.authForm.value;
 
-  try {
-    if (this.isRegister) {
-      await this.auth.register(name!, email!, mobile!, password!);
-      this.router.navigate(['/verify-email']);
-    } else {
-      await this.auth.login(email!, password!);
-      // ⏱️ store 1-hour session
-await this.auth.setSession();
+    try {
+      if (this.isRegister) {
+        await this.auth.register(name!, email!, mobile!, password!);
+        this.router.navigate(['/verify-email']);
+      } else {
+        await this.auth.login(email!, password!);
+        await this.auth.setSession();
+        this.router.navigate(['/']);
+      }
+    } catch (err: any) {
 
-this.router.navigate(['/']);
-    }
-  } catch (err: any) {
-    if (err.message === 'EMAIL_NOT_VERIFIED') {
-      this.router.navigate(['/verify-email']);
-    } else {
-      this.error = err.message || 'Authentication failed';
-    }
+  if (err.message === 'EMAIL_NOT_ALLOWED') {
+    this.error = 'You are not authorized to login to this portal.';
   }
+  else if (err.message === 'EMAIL_NOT_VERIFIED') {
+    this.router.navigate(['/verify-email']);
+  }
+  else {
+    this.error = err.message || 'Authentication failed';
+  }
+
 }
 
-
-
-
-
+  }
 }

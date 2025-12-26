@@ -25,9 +25,9 @@ export class AboutCitizonComponent implements OnInit {
   ngOnInit(): void {
 
     // 📖 Public read
-    this.gp.getCitizenInfo().subscribe(res => {
-      if (res) this.data = res;
-    });
+this.gp.getCitizenInfo().subscribe((res: any) => {
+  this.data = res;
+});
 
         // 🔐 Logged-in check only
     this.auth.getAuthState().subscribe(user => {
