@@ -24,51 +24,61 @@ export class ReportsComponent implements OnInit {
     private gp: GpContentService
   ) {}
 
-  ngOnInit(): void {
-
-    // 📖 Public read
+  /* 🔄 LOAD DATA */
+  loadReports() {
     this.gp.getReports().subscribe(data => {
       this.rows = data;
     });
+  }
 
-    // 🔐 Logged-in check only
+  ngOnInit(): void {
+    // 📖 Public read
+    this.loadReports();
+
+    // 🔐 Logged-in check
     this.auth.getAuthState().subscribe(user => {
       this.isAdmin = !!user;
     });
   }
 
-  // ➕ ADD / ✏️ UPDATE
+  /* ➕ ADD / ✏️ UPDATE */
   save() {
     if (!this.isAdmin) return;
 
+    const payload = {
+      title: this.form.title,
+      description: this.form.description,
+      link: this.form.link
+    };
+
     if (this.form.id) {
-      this.gp.updateReport(this.form.id, {
-        title: this.form.title,
-        description: this.form.description,
-        link: this.form.link
+      // UPDATE
+      this.gp.updateReport(this.form.id, payload).subscribe(() => {
+        this.loadReports();
+        this.reset();
       });
     } else {
-      this.gp.addReport({
-        title: this.form.title,
-        description: this.form.description,
-        link: this.form.link
+      // ADD
+      this.gp.addReport(payload).subscribe(() => {
+        this.loadReports();
+        this.reset();
       });
     }
-
-    this.reset();
   }
 
-  // ✏️ EDIT
+  /* ✏️ EDIT */
   edit(row: any) {
-    this.form = { ...row };
+    this.form = { ...row, id: row._id };
   }
 
-  // ❌ DELETE
+  /* ❌ DELETE */
   delete(id: string) {
     if (!this.isAdmin) return;
 
     if (confirm('Are you sure you want to delete this report?')) {
-      this.gp.deleteReport(id);
+      this.gp.deleteReport(id).subscribe(() => {
+        this.loadReports();
+      });
     }
   }
 

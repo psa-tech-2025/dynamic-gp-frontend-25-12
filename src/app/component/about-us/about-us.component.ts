@@ -28,20 +28,27 @@ export class AboutUsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // 🔓 Public read
-this.gp.getAbout().subscribe((data: any) => {
-  this.about = data;
-});
+    this.loadAbout();
 
-
-    // 🔐 Admin check
     this.auth.getAuthState().subscribe(user => {
       this.isAdmin = !!user;
     });
   }
 
+  loadAbout() {
+    this.gp.getAbout().subscribe(data => {
+      if (data) {
+        this.about = data;
+      }
+    });
+  }
+
   save() {
     if (!this.isAdmin) return;
-    this.gp.updateAbout(this.about);
+
+    this.gp.updateAbout(this.about).then(() => {
+      alert('About section updated');
+      this.loadAbout();
+    });
   }
 }

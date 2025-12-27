@@ -2,12 +2,76 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
-const API = 'https://api.yourdomain.com/api'; // 🔁 change this
+const API = 'http://localhost:3000/api'; 
 
 @Injectable({ providedIn: 'root' })
 export class GpContentService {
 
   constructor(private http: HttpClient) {}
+   /* ================= OFFICERS ================= */
+getOfficers() {
+  return this.http.get<any[]>(`${API}/officers`);
+}
+
+addOfficer(data: any) {
+  return this.http.post(`${API}/officers`, data).toPromise();
+}
+
+updateOfficer(id: string, data: any) {
+  return this.http.put(`${API}/officers/${id}`, data).toPromise();
+}
+
+deleteOfficer(id: string) {
+  return this.http.delete(`${API}/officers/${id}`).toPromise();
+}
+
+  /* ================= REPORTS ================= */
+
+/* ================= REPORTS ================= */
+
+getReports() {
+  return this.http.get<any[]>(`${API}/reports`);
+}
+
+addReport(data: any) {
+  return this.http.post(`${API}/reports`, data);
+}
+
+updateReport(id: string, data: any) {
+  return this.http.put(`${API}/reports/${id}`, data);
+}
+
+deleteReport(id: string) {
+  return this.http.delete(`${API}/reports/${id}`);
+}
+  /* ================= SCHEMES ================= */
+
+getSchemes() {
+  return this.http.get<any[]>(`${API}/schemes`);
+}
+
+addScheme(data: any) {
+  return this.http.post(`${API}/schemes`, data).toPromise();
+}
+
+updateScheme(id: string, data: any) {
+  return this.http.put(`${API}/schemes/${id}`, data).toPromise();
+}
+
+deleteScheme(id: string) {
+  return this.http.delete(`${API}/schemes/${id}`).toPromise();
+}
+
+/* ================= ABOUT US ================= */
+
+getAbout() {
+  return this.http.get<any>(`${API}/about`);
+}
+
+updateAbout(data: any) {
+  return this.http.put(`${API}/about`, data).toPromise();
+}
+
 
   /* ================= FILE UPLOAD ================= */
 
@@ -75,41 +139,9 @@ export class GpContentService {
     return this.http.delete(`${API}/home-announcements/${id}`).toPromise();
   }
 
-  /* ================= OFFICERS ================= */
+ 
 
-  getOfficers() {
-    return this.http.get<any[]>(`${API}/officers`);
-  }
 
-  addOfficer(data: any) {
-    return this.http.post(`${API}/officers`, data).toPromise();
-  }
-
-  updateOfficer(id: string, data: any) {
-    return this.http.put(`${API}/officers/${id}`, data).toPromise();
-  }
-
-  deleteOfficer(id: string) {
-    return this.http.delete(`${API}/officers/${id}`).toPromise();
-  }
-
-  /* ================= REPORTS ================= */
-
-  getReports() {
-    return this.http.get<any[]>(`${API}/reports`);
-  }
-
-  addReport(data: any) {
-    return this.http.post(`${API}/reports`, data).toPromise();
-  }
-
-  updateReport(id: string, data: any) {
-    return this.http.put(`${API}/reports/${id}`, data).toPromise();
-  }
-
-  deleteReport(id: string) {
-    return this.http.delete(`${API}/reports/${id}`).toPromise();
-  }
 
   /* ================= HOME INTRO ================= */
 
@@ -146,33 +178,7 @@ export class GpContentService {
   deleteHomeMap(id: string) {
     return this.http.delete(`${API}/home-map/${id}`).toPromise();
   }
-  /* ================= SCHEMES ================= */
 
-getSchemes() {
-  return this.http.get<any[]>(`${API}/schemes`);
-}
-
-addScheme(data: any) {
-  return this.http.post(`${API}/schemes`, data).toPromise();
-}
-
-updateScheme(id: string, data: any) {
-  return this.http.put(`${API}/schemes/${id}`, data).toPromise();
-}
-
-deleteScheme(id: string) {
-  return this.http.delete(`${API}/schemes/${id}`).toPromise();
-}
-
-/* ================= ABOUT US ================= */
-
-getAbout() {
-  return this.http.get<any>(`${API}/about`);
-}
-
-updateAbout(data: any) {
-  return this.http.put(`${API}/about`, data).toPromise();
-}
 
 /* ================= CITIZEN INFO ================= */
 

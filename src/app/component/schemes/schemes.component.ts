@@ -28,8 +28,12 @@ export class SCHEMESComponent implements OnInit {
   ngOnInit(): void {
     // 🔓 Public read
 this.gp.getSchemes().subscribe((data: any[]) => {
-  this.schemes = data;
+  this.schemes = data.map((s: any) => ({
+    ...s,
+    id: s._id   // 👈 map Mongo _id → id
+  }));
 });
+
 
 
     // 🔐 Role check
@@ -48,25 +52,41 @@ save() {
   };
 
   if (this.form.id) {
-    this.gp.updateScheme(this.form.id, payload);
+    this.gp.updateScheme(this.form.id, payload)
+      .then(() => this.reload());
   } else {
-    this.gp.addScheme(payload);
+    this.gp.addScheme(payload)
+      .then(() => this.reload());
   }
 
   this.reset();
 }
 
+
   edit(scheme: any) {
     this.form = { ...scheme };
   }
 
-  delete(id: string) {
-    if (confirm('Delete this scheme?')) {
-      this.gp.deleteScheme(id);
-    }
+delete(id: string) {
+  if (!this.isAdmin) return;
+
+  if (confirm('Delete this scheme?')) {
+    this.gp.deleteScheme(id)
+      .then(() => this.reload());
   }
+}
+
 
   reset() {
     this.form = { id: null, name: '', desc: '', link: '' };
   }
+  reload() {
+  this.gp.getSchemes().subscribe((data: any[]) => {
+    this.schemes = data.map((s: any) => ({
+      ...s,
+      id: s._id
+    }));
+  });
+}
+
 }
