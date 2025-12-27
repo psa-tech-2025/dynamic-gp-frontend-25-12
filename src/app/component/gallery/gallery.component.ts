@@ -24,14 +24,17 @@ export class GalleryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-      this.gp.getGallery().subscribe(data => {
-    this.images = data;
+this.gp.getGallery().subscribe(data => {
+    this.images = data.map((x: any) => ({
+      id: x._id,
+      url: x.url,
+      description: x.description
+    }));
   });
 
-  // 🔐 Check login only (NO ROLE)
   this.auth.getAuthState().subscribe(user => {
-  this.isAdmin = !!user; // logged in = true, public = false
-});
+    this.isAdmin = !!user;
+  });
 
   }
   onFileSelect(event: any) {
@@ -61,15 +64,28 @@ export class GalleryComponent implements OnInit {
     });
   } else {
     // ➕ ADD
-    await this.gp.addGallery({
-      url,
-      description: this.description
-    });
+ await this.gp.addGallery({
+  url,
+  description: this.description
+});
+
+this.reload();
+
   }
 
   this.reset();
 }
 
+reload() {
+  this.gp.getGallery().subscribe(data => {
+    this.images = data.map((x: any) => ({
+      id: x._id,
+      url: x.url,
+      description: x.description
+    }));
+  });
+  this.reset();
+}
 
   edit(item: any) {
     if (!this.isAdmin) return;

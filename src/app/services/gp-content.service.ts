@@ -157,9 +157,11 @@ updateAbout(data: any) {
     return this.http.put(`${API}/home-intro/${id}`, data).toPromise();
   }
 
-  deleteHomeIntro(id: string) {
-    return this.http.delete(`${API}/home-intro/${id}`).toPromise();
-  }
+deleteHomeIntro(id: string) {
+  return this.http.delete(`${API}/home-intro/${id}`);
+}
+
+
 
   /* ================= MAP ================= */
 
@@ -175,9 +177,9 @@ updateAbout(data: any) {
     return this.http.put(`${API}/home-map/${id}`, data).toPromise();
   }
 
-  deleteHomeMap(id: string) {
-    return this.http.delete(`${API}/home-map/${id}`).toPromise();
-  }
+deleteHomeMap(id: string) {
+  return this.http.delete(`${API}/home-map/${id}`).toPromise();
+}
 
 
 /* ================= CITIZEN INFO ================= */

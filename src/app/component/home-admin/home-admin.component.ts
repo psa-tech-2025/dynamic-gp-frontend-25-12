@@ -160,11 +160,19 @@ selectedImages: File[] = [];
     this.form.patchValue(item);
   }
 
-  delete(id: string) {
-    if (confirm('Delete this record?')) {
-      this.gp.deleteHomeIntro(id);
-    }
+delete(id: string) {
+  console.log('DELETE HOME INTRO ID:', id);
+
+  if (confirm('Delete this record?')) {
+    this.gp.deleteHomeIntro(id).subscribe({
+      next: () => {
+        this.load(); // refresh list
+      },
+      error: err => console.error(err)
+    });
   }
+}
+
 
   reset() {
     this.form.reset();

@@ -103,7 +103,13 @@
         <td>{{ i.introText }}</td>
         <td>
           <button class="btn btn-sm btn-warning me-1" (click)="edit(i)">Edit</button>
-          <button class="btn btn-sm btn-danger" (click)="delete(i.id)">Delete</button>
+<button
+  class="btn btn-sm btn-danger"
+  (click)="delete(i.id || i._id)">
+  Delete
+</button>
+
+
         </td>
       </tr>
     </tbody>
@@ -176,9 +182,14 @@
           <button class="btn btn-sm btn-warning me-1" (click)="editMap(m)">
             Edit
           </button>
-          <button class="btn btn-sm btn-danger" (click)="deleteMap(m.id)">
-            Delete
-          </button>
+<button
+  type="button"
+  class="btn btn-sm btn-danger"
+  (click)="deleteMap(m.id)">
+  Delete
+</button>
+
+
         </td>
       </tr>
     </tbody>
