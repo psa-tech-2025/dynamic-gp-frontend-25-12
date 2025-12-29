@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { NavbarHeaderComponent } from './common/navbar-header/navbar-header.component';
 import { FooterComponent } from './common/footer/footer.component';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HomeComponent } from './component/home/home.component';
 import { GalleryComponent } from './component/gallery/gallery.component';
@@ -28,6 +28,7 @@ import { VerifyEmailComponent } from './auth/verify-email/verify-email.component
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
 import { HomeAdminComponent } from './component/home-admin/home-admin.component';
 import { SafeUrlPipe } from './pipe/safe-url.pipe';
+import { ProjectInterceptor } from './core/interceptors/project.interceptor';
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -72,7 +73,13 @@ export function HttpLoaderFactory(http: HttpClient) {
       defaultLanguage: 'mr'   // ✅ Set Marathi as default
     })
   ],
-  providers: [],
+  providers: [
+        {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ProjectInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

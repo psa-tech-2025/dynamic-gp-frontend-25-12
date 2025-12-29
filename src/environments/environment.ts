@@ -20,6 +20,9 @@ export const environment = {
   // appId: "1:273761641932:web:34deb00b7f6e053b2c6969"
 }
 };
+export const PROJECT_CONFIG = {
+  projectId: 'gp-001' // CHANGE PER ANGULAR PROJECT
+};
 
 /*
  * For easier debugging in development mode, you can import the following file

@@ -9,3 +9,7 @@ export const environment = {
   appId: "1:29919292277:web:4542242de5a8e27ae9413c"
 }
 };
+export const PROJECT_CONFIG = {
+  projectId: 'gp-001' // CHANGE PER ANGULAR PROJECT
+};
+
